@@ -1,40 +1,60 @@
-import {Get, Post, Patch, Delete, Controller, Param, Body} from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from "@nestjs/common";
+import { ClientService } from "./client.service";
 import { CreateClientDto, GetClientsDto, UpdateClientDto } from "./client.dto";
 import { GetClientsModel } from "./client.model";
-import { ClientService } from "./client.service";
-import { ClientId } from "./client.entity";
 
-function toClientId(id: string): ClientId {
-  return id as ClientId;
-}
-
-
-@Controller('clients')
+@Controller("clients")
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
   @Get()
-  findAll() {
-    return this.clientService.findAll();
+  async getClients(@Query() input: GetClientsDto): Promise<GetClientsModel> {
+    const [property, direction] = input.sort
+      ? input.sort.split(",")
+      : ["name", "ASC"];
+
+    const [clients, totalCount] = await this.clientService.getAllClients({
+      ...input,
+      sort: {
+        [property]: direction,
+      },
+    });
+
+    return {
+      data: clients,
+      totalCount,
+    };
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.clientService.findOne(toClientId(id));
+  @Get(":id")
+  public async getClient(@Param("id") id: string) {
+    return this.clientService.getClientById(id);
   }
 
   @Post()
-  create(@Body() createClientDto: CreateClientDto) {
-    return this.clientService.create(createClientDto);
+  createClient(@Body() createClientDto: CreateClientDto) {
+    return this.clientService.createClient(createClientDto);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
-    return this.clientService.update(toClientId(id), updateClientDto);
+  @Patch(":id")
+  updateClient(
+    @Param("id") id: string,
+    @Body() updateClientDto: UpdateClientDto,
+  ) {
+    return this.clientService.updateClient(id, updateClientDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.clientService.remove(toClientId(id));
+  @Delete(":id")
+  deleteClient(@Param("id") id: string) {
+    return this.clientService.deleteClient(id);
   }
 }

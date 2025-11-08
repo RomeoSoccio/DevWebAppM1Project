@@ -1,39 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { ClientEntity, ClientId } from './client.entity';
-import { CreateClientDto, UpdateClientDto } from './client.dto';
+import { Injectable } from "@nestjs/common";
+import { ClientRepository } from "./client.repository";
+import {
+  ClientModel,
+  CreateClientModel,
+  FilterClientsModel,
+  UpdateClientModel,
+} from "./client.model";
 
 @Injectable()
 export class ClientService {
-  constructor(
-    @InjectRepository(ClientEntity)
-    private clientRepo: Repository<ClientEntity>,
-  ) {}
+  constructor(private clientRepo: ClientRepository) {}
 
-  async findAll(): Promise<ClientEntity[]> {
-    return this.clientRepo.find();
+  public async getAllClients(
+    input?: FilterClientsModel,
+  ): Promise<[ClientModel[], number]> {
+    return this.clientRepo.getAllClients(input);
   }
 
-async findOne(id: ClientId): Promise<ClientEntity | null> {
-  return this.clientRepo.findOne({
-    where: { id },
-    relations: ['achats', 'achats.book', 'achats.book.author'],
-  });
+  public async getClientById(id: string): Promise<ClientModel | undefined> {
+    return this.clientRepo.getClientById(id);
   }
 
-  async create(dto: CreateClientDto): Promise<ClientEntity> {
-    const client = this.clientRepo.create(dto);
-    return this.clientRepo.save(client);
+  public async createClient(client: CreateClientModel): Promise<ClientModel> {
+    return this.clientRepo.createClient(client);
   }
 
-  async update(id: ClientId, dto: UpdateClientDto): Promise<ClientEntity | null> {
-    await this.clientRepo.update(id, dto);
-    return this.findOne(id);
+  public async updateClient(
+    id: string,
+    client: UpdateClientModel,
+  ): Promise<ClientModel | undefined> {
+    const oldClient = await this.getClientById(id);
+    if (!oldClient) {
+      return undefined;
+    }
+
+    return this.clientRepo.updateClient(id, client);
   }
 
-  async remove(id: ClientId): Promise<void> {
-    await this.clientRepo.delete(id);
+  public async deleteClient(id: string): Promise<void> {
+    await this.clientRepo.deleteClient(id);
   }
-
 }

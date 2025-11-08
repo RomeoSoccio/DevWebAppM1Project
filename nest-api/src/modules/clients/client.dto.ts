@@ -1,29 +1,36 @@
-import { IsInt, IsOptional, IsString, Max, Min, IsEmail } from "class-validator";
+import {
+  IsInt,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+  IsEmail,
+} from "class-validator";
 
 export class CreateClientDto {
   @IsString()
-  prenom: string;
+  firstName: string;
 
   @IsString()
-  nom: string;
+  lastName: string;
 
   @IsOptional()
   @IsEmail()
-  email?: string;
+  email: string;
 
   @IsOptional()
   @IsString()
-  photoUrl?: string;
+  photoUrl: string;
 }
 
 export class UpdateClientDto {
   @IsOptional()
   @IsString()
-  prenom?: string;
+  firstName?: string;
 
   @IsOptional()
   @IsString()
-  nom?: string;
+  lastName?: string;
 
   @IsOptional()
   @IsEmail()
@@ -55,11 +62,5 @@ export class ClientDto {
   nom: string;
   email?: string;
   photoUrl?: string;
-  nbLivresAchetes?: PurchasedBookDto[];
-}
-
-export class PurchasedBookDto {
-  titre: string;
-  auteur: string;
-  dateAchat: string; 
+  nbLivresAchetes?: number;
 }
