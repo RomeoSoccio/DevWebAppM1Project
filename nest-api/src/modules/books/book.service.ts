@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 import {
   BookModel,
   CreateBookModel,
   FilterBooksModel,
   UpdateBookModel,
-} from './book.model';
-import { BookRepository } from './book.repository';
+} from "./book.model";
+import { BookRepository } from "./book.repository";
 
 @Injectable()
 export class BookService {

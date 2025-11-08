@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { AuthorModel, CreateAuthorModel } from './author.model';
-import { AuthorRepository } from './author.repository';
+import { Injectable } from "@nestjs/common";
+import { AuthorModel, CreateAuthorModel } from "./author.model";
+import { AuthorRepository } from "./author.repository";
 
 @Injectable()
 export class AuthorService {

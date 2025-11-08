@@ -1,5 +1,5 @@
-import { Outlet } from '@tanstack/react-router'
-import { BookList } from '../components/BookList'
+import { Outlet } from "@tanstack/react-router";
+import { BookList } from "../components/BookList";
 
 export function BooksPage() {
   return (
@@ -7,5 +7,5 @@ export function BooksPage() {
       <BookList />
       <Outlet />
     </div>
-  )
+  );
 }

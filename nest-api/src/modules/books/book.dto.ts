@@ -1,5 +1,5 @@
-import { IsInt, IsOptional, IsString, IsUUID, Max, Min } from 'class-validator';
-import type { AuthorId } from '../authors/author.entity';
+import { IsInt, IsOptional, IsString, IsUUID, Max, Min } from "class-validator";
+import type { AuthorId } from "../authors/author.entity";
 
 export class CreateBookDto {
   @IsString()

@@ -5,26 +5,26 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { AuthorEntity, type AuthorId } from '../../authors/author.entity';
+} from "typeorm";
+import { AuthorEntity, type AuthorId } from "../../authors/author.entity";
 
-export type BookId = string & { __brand: 'Book' };
+export type BookId = string & { __brand: "Book" };
 
-@Entity('books')
+@Entity("books")
 export class BookEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: BookId;
 
-  @Column({ name: 'title', type: 'varchar' })
+  @Column({ name: "title", type: "varchar" })
   title: string;
 
-  @Column({ name: 'year_published', type: 'int' })
+  @Column({ name: "year_published", type: "int" })
   yearPublished: number;
 
-  @Column({ name: 'author_id', type: 'uuid' })
+  @Column({ name: "author_id", type: "uuid" })
   authorId: AuthorId;
 
-  @ManyToOne(() => AuthorEntity, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'author_id' })
+  @ManyToOne(() => AuthorEntity, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "author_id" })
   author: AuthorEntity;
 }

@@ -1,4 +1,4 @@
-import { AuthorId } from './author.entity';
+import { AuthorId } from "./author.entity";
 
 export type AuthorModel = {
   id: AuthorId;

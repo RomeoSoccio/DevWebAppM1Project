@@ -1,14 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
-import { AuthorEntity } from '../authors/author.entity';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { DataSource, Repository } from "typeorm";
+import { AuthorEntity } from "../authors/author.entity";
 import {
   BookModel,
   CreateBookModel,
   FilterBooksModel,
   UpdateBookModel,
-} from './book.model';
-import { BookEntity, BookId } from './entities/book.entity';
+} from "./book.model";
+import { BookEntity, BookId } from "./entities/book.entity";
 
 @Injectable()
 export class BookRepository {
@@ -62,7 +62,7 @@ export class BookRepository {
     });
 
     if (!author) {
-      throw new Error('Author not found');
+      throw new Error("Author not found");
     }
 
     return this.bookRepository.save(this.bookRepository.create(book));
