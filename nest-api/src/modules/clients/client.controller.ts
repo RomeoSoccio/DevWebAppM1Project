@@ -20,7 +20,7 @@ export class ClientController {
   async getClients(@Query() input: GetClientsDto): Promise<GetClientsModel> {
     const [property, direction] = input.sort
       ? input.sort.split(",")
-      : ["name", "ASC"];
+      : ["firstName", "ASC"];
 
     const [clients, totalCount] = await this.clientService.getAllClients({
       ...input,
