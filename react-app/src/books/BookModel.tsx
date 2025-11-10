@@ -7,12 +7,14 @@ export type BookModel = {
     firstName: string
     lastName: string
   }
+  photoURL: string
 }
 
 export type CreateBookModel = {
   authorId: string
   title: string
   yearPublished: number
+  photoURL: string
 }
 
 export type UpdateBookModel = Partial<CreateBookModel>
