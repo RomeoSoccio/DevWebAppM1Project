@@ -12,6 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as BooksRouteImport } from './routes/books'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+<<<<<<< Updated upstream
+=======
+import { Route as ClientsIndexRouteImport } from './routes/clients/index'
+>>>>>>> Stashed changes
 import { Route as BooksIndexRouteImport } from './routes/books/index'
 import { Route as BooksBookIdRouteImport } from './routes/books.$bookId'
 
@@ -30,6 +34,14 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+<<<<<<< Updated upstream
+=======
+const ClientsIndexRoute = ClientsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ClientsRoute,
+} as any)
+>>>>>>> Stashed changes
 const BooksIndexRoute = BooksIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -47,12 +59,20 @@ export interface FileRoutesByFullPath {
   '/books': typeof BooksRouteWithChildren
   '/books/$bookId': typeof BooksBookIdRoute
   '/books/': typeof BooksIndexRoute
+<<<<<<< Updated upstream
+=======
+  '/clients/': typeof ClientsIndexRoute
+>>>>>>> Stashed changes
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/books/$bookId': typeof BooksBookIdRoute
   '/books': typeof BooksIndexRoute
+<<<<<<< Updated upstream
+=======
+  '/clients': typeof ClientsIndexRoute
+>>>>>>> Stashed changes
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,6 +81,7 @@ export interface FileRoutesById {
   '/books': typeof BooksRouteWithChildren
   '/books/$bookId': typeof BooksBookIdRoute
   '/books/': typeof BooksIndexRoute
+<<<<<<< Updated upstream
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -68,12 +89,49 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/about' | '/books/$bookId' | '/books'
   id: '__root__' | '/' | '/about' | '/books' | '/books/$bookId' | '/books/'
+=======
+  '/clients/': typeof ClientsIndexRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/books'
+    | '/clients'
+    | '/books/$bookId'
+    | '/clients/$clientId'
+    | '/books/'
+    | '/clients/'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/about'
+    | '/books/$bookId'
+    | '/clients/$clientId'
+    | '/books'
+    | '/clients'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/books'
+    | '/clients'
+    | '/books/$bookId'
+    | '/clients/$clientId'
+    | '/books/'
+    | '/clients/'
+>>>>>>> Stashed changes
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BooksRoute: typeof BooksRouteWithChildren
+<<<<<<< Updated upstream
+=======
+  ClientsRoute: typeof ClientsRouteWithChildren
+>>>>>>> Stashed changes
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +157,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+<<<<<<< Updated upstream
+=======
+    '/clients/': {
+      id: '/clients/'
+      path: '/'
+      fullPath: '/clients/'
+      preLoaderRoute: typeof ClientsIndexRouteImport
+      parentRoute: typeof ClientsRoute
+    }
+>>>>>>> Stashed changes
     '/books/': {
       id: '/books/'
       path: '/'
@@ -128,10 +196,30 @@ const BooksRouteChildren: BooksRouteChildren = {
 
 const BooksRouteWithChildren = BooksRoute._addFileChildren(BooksRouteChildren)
 
+<<<<<<< Updated upstream
+=======
+interface ClientsRouteChildren {
+  ClientsClientIdRoute: typeof ClientsClientIdRoute
+  ClientsIndexRoute: typeof ClientsIndexRoute
+}
+
+const ClientsRouteChildren: ClientsRouteChildren = {
+  ClientsClientIdRoute: ClientsClientIdRoute,
+  ClientsIndexRoute: ClientsIndexRoute,
+}
+
+const ClientsRouteWithChildren =
+  ClientsRoute._addFileChildren(ClientsRouteChildren)
+
+>>>>>>> Stashed changes
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BooksRoute: BooksRouteWithChildren,
+<<<<<<< Updated upstream
+=======
+  ClientsRoute: ClientsRouteWithChildren,
+>>>>>>> Stashed changes
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

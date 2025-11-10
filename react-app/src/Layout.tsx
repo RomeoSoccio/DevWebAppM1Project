@@ -2,6 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { Route as indexRoute } from "./routes/index";
 import { Route as aboutRoute } from "./routes/about";
 import { Route as booksRoute } from "./routes/books";
+<<<<<<< Updated upstream
+=======
+import { Route as clientsRoute } from "./routes/clients";
+>>>>>>> Stashed changes
 import { Space, type MenuProps } from "antd";
 import { BookOutlined, HomeOutlined, InfoOutlined } from "@ant-design/icons";
 import Menu from "antd/es/menu/menu";
@@ -23,6 +27,14 @@ export function Layout({ children }: LayoutProps) {
       icon: <BookOutlined />,
     },
     {
+<<<<<<< Updated upstream
+=======
+      label: <Link to={clientsRoute.to}>Clients</Link>,
+      key: "clients",
+      icon: <BookOutlined />,
+    },
+    {
+>>>>>>> Stashed changes
       label: <Link to={aboutRoute.to}>About</Link>,
       key: "about",
       icon: <InfoOutlined />,
