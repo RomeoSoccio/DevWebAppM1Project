@@ -1,6 +1,6 @@
-import { IsDate, IsInt, IsOptional, IsUUID, Max, Min } from "class-validator";
-import type { ClientId } from "../clients/client.entity";
-import type { BookId } from "../books/entities/book.entity";
+import { IsDate, IsInt, IsOptional, IsUUID, Max, Min } from 'class-validator';
+import type { ClientId } from '../clients/client.entity';
+import type { BookId } from '../books/entities/book.entity';
 
 export class CreateSaleDTO {
   @IsUUID(4)

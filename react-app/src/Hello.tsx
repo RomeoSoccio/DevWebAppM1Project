@@ -1,6 +1,6 @@
 interface HelloProps {
-  children: React.ReactNode;
-  name: string;
+  children: React.ReactNode
+  name: string
 }
 
 export function Hello({ children, name }: HelloProps) {
@@ -9,5 +9,5 @@ export function Hello({ children, name }: HelloProps) {
       <h1>Hello {name}!</h1>
       <h2>{children}</h2>
     </>
-  );
+  )
 }

@@ -1,11 +1,11 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { SaleEntity } from "./sales.entity";
-import { Repository } from "typeorm";
-import { DataSource } from "typeorm";
-import { CreateSaleModel, FilterSaleModel, SaleModel } from "./sales.model";
-import { ClientEntity } from "../clients/client.entity";
-import { BookEntity } from "../books/entities/book.entity";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { SaleEntity } from './sales.entity';
+import { Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
+import { CreateSaleModel, FilterSaleModel, SaleModel } from './sales.model';
+import { ClientEntity } from '../clients/client.entity';
+import { BookEntity } from '../books/entities/book.entity';
 
 @Injectable()
 export class SaleRepository {
@@ -34,7 +34,7 @@ export class SaleRepository {
       where: Object.keys(where).length ? where : undefined,
       take: input?.limit,
       skip: input?.offset,
-      relations: ["client", "book"],
+      relations: ['client', 'book'],
     });
     return [sales, totalCount];
   }
@@ -45,7 +45,7 @@ export class SaleRepository {
     });
 
     if (!client) {
-      throw new Error("Client not found");
+      throw new Error('Client not found');
     }
 
     const book = await this.bookRepository.findOne({
@@ -53,7 +53,7 @@ export class SaleRepository {
     });
 
     if (!book) {
-      throw new Error("Book not found");
+      throw new Error('Book not found');
     }
 
     return this.saleRepository.save(this.saleRepository.create(sale));

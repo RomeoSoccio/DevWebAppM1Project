@@ -6,8 +6,8 @@ import {
   IsUUID,
   Max,
   Min,
-} from "class-validator";
-import type { AuthorId } from "../authors/author.entity";
+} from 'class-validator';
+import type { AuthorId } from '../authors/author.entity';
 
 export class CreateBookDto {
   @IsString()

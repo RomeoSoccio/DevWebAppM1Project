@@ -1,20 +1,22 @@
-import { useState } from "react";
-import type { CreateClientModel } from "../ClientModel";
-import { Button, Input, Modal, Space } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { useState } from 'react'
+import type { CreateClientModel } from '../ClientModel'
+import { Button, Input, Modal, Space } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 
 interface CreateClientModalProps {
-  onCreate: (book: CreateClientModel) => void;
+  onCreate: (client: CreateClientModel) => void
 }
 
 export function CreateClientModal({ onCreate }: CreateClientModalProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [firstName, setFirstName] = useState("");
+  const [isOpen, setIsOpen] = useState(false)
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
 
   const onClose = () => {
-    setFirstName("");
-    setIsOpen(false);
-  };
+    setFirstName('')
+    setLastName('')
+    setIsOpen(false)
+  }
 
   return (
     <>
@@ -23,7 +25,7 @@ export function CreateClientModal({ onCreate }: CreateClientModalProps) {
         type="primary"
         onClick={() => setIsOpen(true)}
       >
-        Create Book
+        Create Client
       </Button>
       <Modal
         open={isOpen}
@@ -31,19 +33,28 @@ export function CreateClientModal({ onCreate }: CreateClientModalProps) {
         onOk={() => {
           onCreate({
             firstName,
-          });
-          onClose();
+            lastName,
+          })
+          onClose()
         }}
       >
-        <Space direction="vertical" style={{ width: "100%" }}>
+        <Space direction="vertical" style={{ width: '100%' }}>
           <Input
             type="text"
             placeholder="First Name"
             value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            onChange={e => setFirstName(e.target.value)}
+          />
+        </Space>
+        <Space direction="vertical" style={{ width: '100%' }}>
+          <Input
+            type="text"
+            placeholder="Last Name"
+            value={lastName}
+            onChange={e => setLastName(e.target.value)}
           />
         </Space>
       </Modal>
     </>
-  );
+  )
 }

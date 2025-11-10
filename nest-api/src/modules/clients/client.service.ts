@@ -1,11 +1,11 @@
-import { Injectable } from "@nestjs/common";
-import { ClientRepository } from "./client.repository";
+import { Injectable } from '@nestjs/common';
+import { ClientRepository } from './client.repository';
 import {
   ClientModel,
   CreateClientModel,
   FilterClientsModel,
   UpdateClientModel,
-} from "./client.model";
+} from './client.model';
 
 @Injectable()
 export class ClientService {

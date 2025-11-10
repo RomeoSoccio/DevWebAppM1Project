@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { SaleRepository } from "./sales.repository";
-import { CreateSaleModel, FilterSaleModel, SaleModel } from "./sales.model";
+import { Injectable } from '@nestjs/common';
+import { SaleRepository } from './sales.repository';
+import { CreateSaleModel, FilterSaleModel, SaleModel } from './sales.model';
 
 @Injectable()
 export class SaleService {

@@ -1,5 +1,5 @@
-import { BookId } from "../books/entities/book.entity";
-import { ClientId } from "../clients/client.entity";
+import { BookId } from '../books/entities/book.entity';
+import { ClientId } from '../clients/client.entity';
 
 export type SaleModel = {
   id: string;

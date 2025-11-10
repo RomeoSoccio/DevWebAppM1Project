@@ -7,20 +7,20 @@ import {
   Patch,
   Post,
   Query,
-} from "@nestjs/common";
-import { ClientService } from "./client.service";
-import { CreateClientDto, GetClientsDto, UpdateClientDto } from "./client.dto";
-import { GetClientsModel } from "./client.model";
+} from '@nestjs/common';
+import { ClientService } from './client.service';
+import { CreateClientDto, GetClientsDto, UpdateClientDto } from './client.dto';
+import { GetClientsModel } from './client.model';
 
-@Controller("clients")
+@Controller('clients')
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
   @Get()
   async getClients(@Query() input: GetClientsDto): Promise<GetClientsModel> {
     const [property, direction] = input.sort
-      ? input.sort.split(",")
-      : ["firstName", "ASC"];
+      ? input.sort.split(',')
+      : ['firstName', 'ASC'];
 
     const [clients, totalCount] = await this.clientService.getAllClients({
       ...input,
@@ -35,8 +35,8 @@ export class ClientController {
     };
   }
 
-  @Get(":id")
-  public async getClient(@Param("id") id: string) {
+  @Get(':id')
+  public async getClient(@Param('id') id: string) {
     return this.clientService.getClientById(id);
   }
 
@@ -45,16 +45,16 @@ export class ClientController {
     return this.clientService.createClient(createClientDto);
   }
 
-  @Patch(":id")
+  @Patch(':id')
   updateClient(
-    @Param("id") id: string,
+    @Param('id') id: string,
     @Body() updateClientDto: UpdateClientDto,
   ) {
     return this.clientService.updateClient(id, updateClientDto);
   }
 
-  @Delete(":id")
-  deleteClient(@Param("id") id: string) {
+  @Delete(':id')
+  deleteClient(@Param('id') id: string) {
     return this.clientService.deleteClient(id);
   }
 }

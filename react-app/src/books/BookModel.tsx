@@ -1,18 +1,18 @@
 export type BookModel = {
-  id: string;
-  title: string;
-  yearPublished: number;
+  id: string
+  title: string
+  yearPublished: number
   author: {
-    id: string;
-    firstName: string;
-    lastName: string;
-  };
-};
+    id: string
+    firstName: string
+    lastName: string
+  }
+}
 
 export type CreateBookModel = {
-  authorId: string;
-  title: string;
-  yearPublished: number;
-};
+  authorId: string
+  title: string
+  yearPublished: number
+}
 
-export type UpdateBookModel = Partial<CreateBookModel>;
+export type UpdateBookModel = Partial<CreateBookModel>

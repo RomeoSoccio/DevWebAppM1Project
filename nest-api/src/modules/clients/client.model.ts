@@ -23,5 +23,5 @@ export type GetClientsModel = {
 export type FilterClientsModel = {
   limit: number;
   offset: number;
-  sort?: Partial<Record<keyof ClientModel, "ASC" | "DESC">>;
+  sort?: Partial<Record<keyof ClientModel, 'ASC' | 'DESC'>>;
 };

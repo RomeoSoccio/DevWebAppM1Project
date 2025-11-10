@@ -6,12 +6,12 @@ import {
   Param,
   Post,
   Query,
-} from "@nestjs/common";
-import { SaleService } from "./sales.services";
-import { CreateSaleDTO, GetSalesDTO } from "./sales.dto";
-import { GetSalesModel } from "./sales.model";
+} from '@nestjs/common';
+import { SaleService } from './sales.services';
+import { CreateSaleDTO, GetSalesDTO } from './sales.dto';
+import { GetSalesModel } from './sales.model';
 
-@Controller("sales")
+@Controller('sales')
 export class SaleController {
   constructor(private readonly saleService: SaleService) {}
 
@@ -32,8 +32,8 @@ export class SaleController {
     return this.saleService.createSale(createSaleDTO);
   }
 
-  @Delete(":id")
-  deleteBook(@Param("id") id: string) {
+  @Delete(':id')
+  deleteBook(@Param('id') id: string) {
     return this.saleService.deleteSale(id);
   }
 }

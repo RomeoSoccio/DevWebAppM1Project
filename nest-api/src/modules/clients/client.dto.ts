@@ -5,7 +5,7 @@ import {
   Max,
   Min,
   IsEmail,
-} from "class-validator";
+} from 'class-validator';
 
 export class CreateClientDto {
   @IsString()

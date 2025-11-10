@@ -1,5 +1,5 @@
-import { Outlet } from "@tanstack/react-router";
-import { ClientList } from "../components/ClientList";
+import { Outlet } from '@tanstack/react-router'
+import { ClientList } from '../components/ClientList'
 
 export function ClientPage() {
   return (
@@ -7,5 +7,5 @@ export function ClientPage() {
       <ClientList />
       <Outlet />
     </div>
-  );
+  )
 }
