@@ -4,7 +4,12 @@ import { Route as aboutRoute } from './routes/about'
 import { Route as booksRoute } from './routes/books'
 import { Route as clientsRoute } from './routes/clients'
 import { Space, type MenuProps } from 'antd'
-import { BookOutlined, HomeOutlined, InfoOutlined } from '@ant-design/icons'
+import {
+  BookOutlined,
+  HomeOutlined,
+  InfoOutlined,
+  UserOutlined,
+} from '@ant-design/icons'
 import Menu from 'antd/es/menu/menu'
 
 interface LayoutProps {
@@ -26,7 +31,7 @@ export function Layout({ children }: LayoutProps) {
     {
       label: <Link to={clientsRoute.to}>Clients</Link>,
       key: 'clients',
-      icon: <BookOutlined />,
+      icon: <UserOutlined />,
     },
     {
       label: <Link to={aboutRoute.to}>About</Link>,

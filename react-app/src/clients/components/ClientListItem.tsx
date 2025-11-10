@@ -1,13 +1,9 @@
 import { useState } from 'react'
 import type { ClientModel, UpdateClientModel } from '../ClientModel'
 import { Button, Col, Row } from 'antd'
-import {
-  CheckOutlined,
-  CloseOutlined,
-  DeleteOutlined,
-  EditOutlined,
-} from '@ant-design/icons'
+import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons'
 import { Link } from '@tanstack/react-router'
+import { DeleteClientModal } from './DeleteClientModal'
 
 interface ClientListItemProps {
   client: ClientModel
@@ -56,22 +52,28 @@ export function ClientListItem({
           />
         ) : (
           <Link
-            to={`/clients/${client.id}` as any}
+            to={`/clients/${client.id}` as string}
             style={{
               margin: 'auto 0',
               textAlign: 'left',
             }}
           >
-            <span style={{ fontWeight: 'bold' }}>
-              {client.firstName} {client.lastName}
-            </span>
+            <span style={{ fontWeight: 'bold' }}>{client.firstName} </span>
           </Link>
         )}
-      </Col>
-      <Col span={12} style={{ margin: 'auto 0' }}>
         {isEditing ? (
           <input value={lastName} onChange={e => setLastName(e.target.value)} />
-        ) : null}
+        ) : (
+          <Link
+            to={`/clients/${client.id}` as string}
+            style={{
+              margin: 'auto 0',
+              textAlign: 'left',
+            }}
+          >
+            <span style={{ fontWeight: 'bold' }}>{client.lastName}</span>
+          </Link>
+        )}
       </Col>
       <Col
         span={3}
@@ -96,9 +98,11 @@ export function ClientListItem({
             <EditOutlined />
           </Button>
         )}
-        <Button type="primary" danger onClick={() => onDelete(client.id)}>
-          <DeleteOutlined />
-        </Button>
+        <DeleteClientModal
+          clientId={client.id}
+          clientName={`${client.firstName} ${client.lastName}`}
+          onDelete={onDelete}
+        />
       </Col>
     </Row>
   )

@@ -14,7 +14,7 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
 
   useEffect(() => {
     loadClient()
-  }, [id])
+  }, [id, loadClient])
 
   if (isLoading) {
     return <Skeleton active />
@@ -26,7 +26,7 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
         <ArrowLeftOutlined />
       </Link>
       <Typography.Title level={1}>{client?.firstName}</Typography.Title>
-      <Typography.Title level={3}>{client?.lastName}</Typography.Title>
+      <Typography.Title level={2}>{client?.lastName}</Typography.Title>
     </Space>
   )
 }
