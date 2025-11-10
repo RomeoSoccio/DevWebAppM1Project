@@ -23,10 +23,14 @@ export function BookListItem({ book, onDelete, onUpdate }: BookListItemProps) {
     // (portals, lifecycle hooks) may not render correctly. Use a safe native
     // fallback so the delete UX always works.
     try {
-      const reactVersion = (React?.version || "").split(".").map((s) => parseInt(s, 10) || 0);
+      const reactVersion = (React?.version || "")
+        .split(".")
+        .map((s) => parseInt(s, 10) || 0);
       const reactMajor = reactVersion[0] || 0;
       if (reactMajor >= 19) {
-        console.warn("Antd v5 may be incompatible with React >=19 — using native confirm fallback");
+        console.warn(
+          "Antd v5 may be incompatible with React >=19 — using native confirm fallback",
+        );
         if (window.confirm(`Supprimer le livre "${book.title}" ?`)) {
           console.log("BookListItem: native confirm accepted for id=", book.id);
           onDelete(book.id);
@@ -48,7 +52,10 @@ export function BookListItem({ book, onDelete, onUpdate }: BookListItemProps) {
       });
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.error("BookListItem: Modal.confirm error, falling back to native confirm", err);
+      console.error(
+        "BookListItem: Modal.confirm error, falling back to native confirm",
+        err,
+      );
       if (window.confirm(`Supprimer le livre "${book.title}" ?`)) {
         onDelete(book.id);
       }
