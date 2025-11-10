@@ -1,4 +1,12 @@
-import { IsInt, IsOptional, IsString, IsUUID, Max, Min } from "class-validator";
+import {
+  IsInt,
+  IsOptional,
+  IsString,
+  IsUrl,
+  IsUUID,
+  Max,
+  Min,
+} from "class-validator";
 import type { AuthorId } from "../authors/author.entity";
 
 export class CreateBookDto {
@@ -12,6 +20,10 @@ export class CreateBookDto {
   @Min(1500)
   @Max(2025)
   yearPublished: number;
+
+  @IsString()
+  @IsUrl()
+  photoURL: string;
 }
 
 export class UpdateBookDto {
