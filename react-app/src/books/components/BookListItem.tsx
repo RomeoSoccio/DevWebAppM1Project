@@ -51,7 +51,6 @@ export function BookListItem({ book, onDelete, onUpdate }: BookListItemProps) {
         },
       });
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error(
         "BookListItem: Modal.confirm error, falling back to native confirm",
         err,
