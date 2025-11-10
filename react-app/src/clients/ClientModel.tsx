@@ -14,13 +14,21 @@ export type CreateClientModel = {
 }
 
 export type UpdateClientModel = Partial<CreateClientModel>
+export type UpdateClientModel = Partial<CreateClientModel>
 
 export type GetClientsModel = {
   totalCount: number
   data: ClientModel[]
 }
+  totalCount: number
+  data: ClientModel[]
+}
 
 export type FilterClientsModel = {
+  limit: number
+  offset: number
+  sort?: Partial<Record<keyof ClientModel, 'ASC' | 'DESC'>>
+}
   limit: number
   offset: number
   sort?: Partial<Record<keyof ClientModel, 'ASC' | 'DESC'>>
