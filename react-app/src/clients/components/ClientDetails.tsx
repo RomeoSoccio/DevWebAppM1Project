@@ -191,9 +191,18 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
           {sales.map((sale, idx) => (
             <li key={sale?.id ?? idx}>
               <Typography.Text>
-                {sale?.book.title ?? 'Untitled'}
-                {sale?.book.author
-                  ? ` written by ${sale?.book.author.firstName ?? ''} ${sale?.book.author.lastName ?? ''}`
+                {sale?.book ? (
+                  <Link
+                    to={`/books/${sale.book.id}` as string}
+                    style={{ fontWeight: 'bold', color: 'black' }}
+                  >
+                    {sale.book.title ?? 'Untitled'}
+                  </Link>
+                ) : (
+                  (sale?.book?.title ?? 'Untitled')
+                )}
+                {sale?.book?.author
+                  ? ` written by ${sale.book.author.firstName ?? ''} ${sale.book.author.lastName ?? ''}`
                   : ''}
                 {sale?.date ? ` (bought on ${formatDate(sale.date)})` : ''}
               </Typography.Text>
