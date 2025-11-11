@@ -4,8 +4,7 @@ import { ClientListItem } from './ClientListItem'
 import { CreateClientModal } from './CreateClientModal'
 
 export function ClientList() {
-  const { client, loadClient, deleteClient, updateClient, createClient } =
-    useClientProvider()
+  const { client, loadClient, deleteClient, createClient } = useClientProvider()
 
   useEffect(() => {
     loadClient()
@@ -20,7 +19,6 @@ export function ClientList() {
             key={current_client.id}
             client={current_client}
             onDelete={deleteClient}
-            onUpdate={updateClient}
           />
         ))}
       </div>

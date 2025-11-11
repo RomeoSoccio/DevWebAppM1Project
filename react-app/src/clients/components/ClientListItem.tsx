@@ -1,36 +1,15 @@
-import { useState } from 'react'
-import type { ClientModel, UpdateClientModel } from '../ClientModel'
+import type { ClientModel } from '../ClientModel'
 import { Button, Col, Row } from 'antd'
-import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons'
+import { EditOutlined } from '@ant-design/icons'
 import { Link } from '@tanstack/react-router'
 import { DeleteClientModal } from './DeleteClientModal'
 
 interface ClientListItemProps {
   client: ClientModel
   onDelete: (id: string) => void
-  onUpdate: (id: string, input: UpdateClientModel) => void
 }
 
-export function ClientListItem({
-  client,
-  onDelete,
-  onUpdate,
-}: ClientListItemProps) {
-  const [firstName, setFirstName] = useState(client.firstName)
-  const [lastName, setLastName] = useState(client.lastName)
-  const [isEditing, setIsEditing] = useState(false)
-
-  const onCancelEdit = () => {
-    setIsEditing(false)
-    setFirstName(client.firstName)
-    setLastName(client.lastName)
-  }
-
-  const onValidateEdit = () => {
-    onUpdate(client.id, { firstName, lastName })
-    setIsEditing(false)
-  }
-
+export function ClientListItem({ client, onDelete }: ClientListItemProps) {
   return (
     <Row
       style={{
@@ -45,36 +24,16 @@ export function ClientListItem({
       }}
     >
       <Col span={12} style={{ margin: 'auto 0' }}>
-        {isEditing ? (
-          <input
-            value={firstName}
-            onChange={e => setFirstName(e.target.value)}
-          />
-        ) : (
-          <Link
-            to={`/clients/${client.id}` as string}
-            style={{
-              margin: 'auto 0',
-              textAlign: 'left',
-            }}
-          >
-            <span style={{ fontWeight: 'bold' }}>{client.firstName} </span>
-          </Link>
-        )}
-        {isEditing ? (
-          <input value={lastName} onChange={e => setLastName(e.target.value)} />
-        ) : (
-          <Link
-            to={`/clients/${client.id}` as string}
-            style={{
-              margin: 'auto 0',
-              textAlign: 'left',
-            }}
-          >
-            <span style={{ fontWeight: 'bold' }}>{client.lastName}</span>
-          </Link>
-        )}
+        <Link
+          to={`/clients/${client.id}` as string}
+          style={{ margin: 'auto 0', textAlign: 'left' }}
+        >
+          <span style={{ fontWeight: 'bold' }}>
+            {client.firstName} {client.lastName}
+          </span>
+        </Link>
       </Col>
+
       <Col
         span={3}
         style={{
@@ -82,23 +41,12 @@ export function ClientListItem({
           display: 'flex',
           gap: '.25rem',
           margin: 'auto 0',
-          marginRight: '3rem',
         }}
       >
-        {isEditing ? (
-          <>
-            <Button type="primary" onClick={onValidateEdit}>
-              <CheckOutlined />
-            </Button>
-            <Button onClick={onCancelEdit}>
-              <CloseOutlined />
-            </Button>
-          </>
-        ) : (
-          <Button type="primary" onClick={() => setIsEditing(true)}>
-            <EditOutlined />
-          </Button>
-        )}
+        <Link to={`/clients/${client.id}` as string}>
+          <Button type="primary" icon={<EditOutlined />} />
+        </Link>
+
         <DeleteClientModal
           clientId={client.id}
           clientName={`${client.firstName} ${client.lastName}`}

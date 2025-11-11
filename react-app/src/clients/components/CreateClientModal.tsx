@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { CreateClientModel } from '../ClientModel'
-import { Button, Input, Modal, Space, Typography } from 'antd'
+import { Button, Input, Modal, Typography, Form } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 
 interface CreateClientModalProps {
@@ -13,8 +13,10 @@ export function CreateClientModal({ onCreate }: CreateClientModalProps) {
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [photoUrl, setPhotoUrl] = useState('')
+  const [form] = Form.useForm()
 
   const onClose = () => {
+    form.resetFields()
     setFirstName('')
     setLastName('')
     setEmail('')
@@ -33,62 +35,74 @@ export function CreateClientModal({ onCreate }: CreateClientModalProps) {
       </Button>
       <Modal
         open={isOpen}
-        onCancel={onClose}
-        onOk={() => {
-          onCreate({
-            firstName,
-            lastName,
-            email,
-            photoUrl,
-          })
+        onCancel={() => {
+          form.resetFields()
           onClose()
+        }}
+        onOk={async () => {
+          try {
+            const values = await form.validateFields()
+            onCreate({
+              firstName: values.firstName,
+              lastName: values.lastName,
+              email: values.email,
+              photoUrl: values.photoUrl,
+            })
+            form.resetFields()
+            onClose()
+          } catch {
+            // validation errors; don't close
+          }
         }}
       >
         <Typography.Title level={4}>Create a new client</Typography.Title>
-        <Space
-          direction="vertical"
-          style={{ width: '100%', marginBottom: '.3rem' }}
+        <Form
+          form={form}
+          layout="vertical"
+          initialValues={{ firstName, lastName, email, photoUrl }}
         >
-          <Input
-            type="text"
-            placeholder="First Name"
-            value={firstName}
-            onChange={e => setFirstName(e.target.value)}
-          />
-        </Space>
-        <Space
-          direction="vertical"
-          style={{ width: '100%', marginBottom: '.3rem' }}
-        >
-          <Input
-            type="text"
-            placeholder="Last Name"
-            value={lastName}
-            onChange={e => setLastName(e.target.value)}
-          />
-        </Space>
-        <Space
-          direction="vertical"
-          style={{ width: '100%', marginBottom: '.3rem' }}
-        >
-          <Input
-            type="email"
-            placeholder="Email (optional)"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-        </Space>
-        <Space
-          direction="vertical"
-          style={{ width: '100%', marginBottom: '.3rem' }}
-        >
-          <Input
-            type="url"
-            placeholder="Profile Picture URL (optional)"
-            value={photoUrl}
-            onChange={e => setPhotoUrl(e.target.value)}
-          />
-        </Space>
+          <Form.Item
+            name="firstName"
+            label="First Name"
+            rules={[{ required: true, message: 'First name is required' }]}
+          >
+            <Input
+              placeholder="First Name"
+              value={firstName}
+              onChange={e => setFirstName(e.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="lastName"
+            label="Last Name"
+            rules={[{ required: true, message: 'Last name is required' }]}
+          >
+            <Input
+              placeholder="Last Name"
+              value={lastName}
+              onChange={e => setLastName(e.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item name="email" label="Email (optional)">
+            <Input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item name="photoUrl" label="Photo URL (optional)">
+            <Input
+              type="url"
+              placeholder="URL"
+              value={photoUrl}
+              onChange={e => setPhotoUrl(e.target.value)}
+            />
+          </Form.Item>
+        </Form>
       </Modal>
     </>
   )

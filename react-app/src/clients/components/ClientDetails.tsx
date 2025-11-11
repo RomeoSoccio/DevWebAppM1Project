@@ -1,23 +1,70 @@
-import { Skeleton, Space, Typography, Image } from 'antd'
+import { Skeleton, Space, Typography, Image, Button, Form, Input } from 'antd'
 import { useClientDetailsProvider } from '../providers/useClientDetailsProvider'
-import { useEffect } from 'react'
-import { ArrowLeftOutlined } from '@ant-design/icons'
-import { Link } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
+import {
+  ArrowLeftOutlined,
+  EditOutlined,
+  CheckOutlined,
+  CloseOutlined,
+} from '@ant-design/icons'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { Route as clientRoute } from '../../routes/clients'
+import { DeleteClientModal } from './DeleteClientModal'
 
 interface ClientDetailsProps {
   id: string
 }
 
 export const ClientDetails = ({ id }: ClientDetailsProps) => {
-  const { isLoading, client, loadClient } = useClientDetailsProvider(id)
+  const { isLoading, client, loadClient, updateClient, deleteClient } =
+    useClientDetailsProvider(id)
+  const [isEditing, setIsEditing] = useState(false)
+  const [form] = Form.useForm()
+  const navigate = useNavigate()
 
   useEffect(() => {
     loadClient()
   }, [id, loadClient])
 
+  useEffect(() => {
+    if (client) {
+      form.setFieldsValue({
+        firstName: client.firstName,
+        lastName: client.lastName,
+        email: client.email,
+        photoUrl: client.photoUrl,
+      })
+    }
+  }, [client, form])
+
   if (isLoading) {
     return <Skeleton active />
+  }
+
+  const onSave = async () => {
+    try {
+      const values = await form.validateFields()
+      await updateClient({
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        photoUrl: values.photoUrl,
+      })
+      setIsEditing(false)
+      // reload handled by provider
+    } catch {
+      // validation or update error
+    }
+  }
+
+  const handleDeleteConfirmed = async () => {
+    try {
+      await deleteClient()
+      // after deletion, go back to clients list
+      navigate({ to: clientRoute.to })
+    } catch {
+      // handle delete error
+    }
   }
 
   return (
@@ -25,7 +72,39 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
       <Link to={clientRoute.to}>
         <ArrowLeftOutlined />
       </Link>
+      <div
+        style={{
+          marginLeft: 'auto',
+          display: 'flex',
+          justifyContent: 'end',
+          gap: '.5rem',
+        }}
+      >
+        {isEditing ? (
+          <>
+            <Button type="primary" onClick={onSave} icon={<CheckOutlined />} />
+            <Button
+              onClick={() => setIsEditing(false)}
+              icon={<CloseOutlined />}
+            />
+          </>
+        ) : (
+          <Button
+            type="primary"
+            onClick={() => setIsEditing(true)}
+            icon={<EditOutlined />}
+          />
+        )}
 
+        <DeleteClientModal
+          clientId={client?.id ?? ''}
+          clientName={`${client?.firstName ?? ''} ${client?.lastName ?? ''}`}
+          onDelete={id => {
+            void id
+            void handleDeleteConfirmed()
+          }}
+        />
+      </div>
       {client?.photoUrl ? (
         <Image
           src={client.photoUrl}
@@ -49,10 +128,45 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
           Pas de photo
         </div>
       )}
-      <Typography.Title level={1}>
-        {client?.firstName} {client?.lastName}
-      </Typography.Title>
-      <Typography.Title level={3}>Email : {client?.email}</Typography.Title>
+
+      <div style={{ display: 'flex', gap: '.5rem', alignItems: 'center' }}>
+        {!isEditing ? (
+          <Typography.Title level={1} style={{ margin: 0, color: '#fff' }}>
+            {client?.firstName} {client?.lastName}
+          </Typography.Title>
+        ) : (
+          <Form form={form} layout="inline">
+            <Form.Item
+              name="firstName"
+              rules={[{ required: true, message: 'First name is required' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="lastName"
+              rules={[{ required: true, message: 'Last name is required' }]}
+            >
+              <Input />
+            </Form.Item>
+          </Form>
+        )}
+      </div>
+
+      {!isEditing && (
+        <Typography.Title level={3} style={{ color: '#fff' }}>
+          Email : {client?.email}
+        </Typography.Title>
+      )}
+      {isEditing && (
+        <Form form={form} layout="vertical">
+          <Form.Item name="email" label="Email">
+            <Input />
+          </Form.Item>
+          <Form.Item name="photoUrl" label="Photo URL">
+            <Input />
+          </Form.Item>
+        </Form>
+      )}
     </Space>
   )
 }
