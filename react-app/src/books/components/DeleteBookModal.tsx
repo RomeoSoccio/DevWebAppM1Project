@@ -22,9 +22,7 @@ export function DeleteBookModal({ book, onDelete }: DeleteBookModalProps) {
         type="primary"
         danger
         onClick={() => setIsOpen(true)}
-      >
-        Supprimer
-      </Button>
+      ></Button>
       <Modal
         open={isOpen}
         onCancel={onClose}
@@ -33,12 +31,12 @@ export function DeleteBookModal({ book, onDelete }: DeleteBookModalProps) {
           onClose()
         }}
         okButtonProps={{ danger: true }}
-        title="Delete the book"
+        title="Confirm Deletion"
         okText="Delete"
         cancelText="Cancel"
       >
         <Space direction="vertical" style={{ width: '100%' }}>
-          <p>Voulez-vous vraiment supprimer &quot;{book.title}&quot; ?</p>
+          <p>Do you really want to delete &quot;{book.title}&quot; ?</p>
         </Space>
       </Modal>
     </>

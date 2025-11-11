@@ -34,8 +34,8 @@ export function ClientListItem({ client, onDelete }: ClientListItemProps) {
 
   const orderLabel =
     orderCount !== null
-      ? `${orderCount} commande${orderCount > 1 ? 's' : ''}`
-      : 'Chargement...'
+      ? `${orderCount} command${orderCount > 1 ? 's' : ''}`
+      : 'Loading...'
   return (
     <Row
       style={{
