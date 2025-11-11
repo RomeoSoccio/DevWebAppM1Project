@@ -16,10 +16,9 @@ import { BuyBookModal } from './BuyBookModal'
 
 interface BookDetailsProps {
   id: string
-  onBuy: (id: string) => void
 }
 
-export const BookDetails = ({ id, onBuy }: BookDetailsProps) => {
+export const BookDetails = ({ id }: BookDetailsProps) => {
   const { isLoading, book, loadBook } = useBookDetailsProvider(id)
   const { updateBook } = useBookProvider()
   const { authors, loadAuthors } = useBookAuthorsProviders()
@@ -169,13 +168,14 @@ export const BookDetails = ({ id, onBuy }: BookDetailsProps) => {
           {buyers.map(buyer => (
             <li key={buyer.id}>
               <Typography.Text>
-                {buyer.firstName} {buyer.lastName} ({buyer.email})
+                {buyer.firstName} {buyer.lastName}
+                {buyer.email ? ` (${buyer.email})` : ''}
               </Typography.Text>
             </li>
           ))}
         </ul>
       )}
-      <BuyBookModal book={book} onBuy={onBuy} />
+      <BuyBookModal book={book} onBuy={loadBuyers} />
     </Space>
   )
 }
