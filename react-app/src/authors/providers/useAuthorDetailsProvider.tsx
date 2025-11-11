@@ -6,28 +6,31 @@ import axios from 'axios'
 export const useAuthorDetailsProvider = (id: string) => {
   const [isLoading, setIsLoading] = useState(false)
   const [author, setAuthor] = useState<AuthorModel | null>(null)
+  const [booksByAuthor, setBooksByAuthor] = useState<
+    Array<BookModel & { authorId?: string }>
+  >([])
 
   const loadAuthor = useCallback(async () => {
     setIsLoading(true)
     try {
-      // backend does not provide GET /authors/:id in current API, so fetch all and find
-      const [authorsRes, booksRes] = await Promise.all([
-        axios.get('http://localhost:3000/authors'),
+      // Use dedicated endpoint to fetch a single author by id
+      const [authorRes, booksRes] = await Promise.all([
+        axios.get(`http://localhost:3000/authors/${id}`),
         axios.get('http://localhost:3000/books'),
       ])
 
-      const authors: AuthorModel[] = authorsRes.data ?? []
+      const found: AuthorModel | null = authorRes.data ?? null
       const books: Array<BookModel & { authorId?: string }> =
         booksRes.data?.data ?? []
 
-      const found = authors.find(a => a.id === id) ?? null
       if (found) {
-        const count = books.filter(
-          b => (b.author?.id ?? b.authorId) === id,
-        ).length
+        const matches = books.filter(b => (b.author?.id ?? b.authorId) === id)
+        const count = matches.length
         setAuthor({ ...found, booksCount: count })
+        setBooksByAuthor(matches)
       } else {
         setAuthor(null)
+        setBooksByAuthor([])
       }
     } catch (err) {
       console.error(err)
@@ -60,5 +63,12 @@ export const useAuthorDetailsProvider = (id: string) => {
       })
   }, [id])
 
-  return { isLoading, author, loadAuthor, updateAuthor, deleteAuthor }
+  return {
+    isLoading,
+    author,
+    booksByAuthor,
+    loadAuthor,
+    updateAuthor,
+    deleteAuthor,
+  }
 }

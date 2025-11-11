@@ -29,19 +29,18 @@ export function DeleteAuthorModal({
         danger
         icon={<DeleteOutlined />}
         onClick={() => setIsOpen(true)}
-      >
-        Supprimer
-      </Button>
+      ></Button>
 
       <Modal
         open={isOpen}
         onCancel={onClose}
+        okButtonProps={{ danger: true }}
         onOk={handleConfirm}
-        okText="Supprimer"
-        cancelText="Annuler"
-        title="Confirmer la suppression"
+        okText="Delete"
+        cancelText="Cancel"
+        title="Confirm Deletion"
       >
-        <p>Voulez-vous vraiment supprimer {authorName ?? 'cet auteur'} ?</p>
+        <p>Do you really want to delete {authorName ?? 'this author'} ?</p>
       </Modal>
     </>
   )
