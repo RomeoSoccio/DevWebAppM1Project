@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Skeleton, Space, Typography, Select } from 'antd'
+import { Button, Skeleton, Space, Typography, Select, Breadcrumb } from 'antd'
 import {
   ArrowLeftOutlined,
   CheckOutlined,
@@ -12,6 +12,7 @@ import { useBookDetailsProvider } from '../providers/useBookDetailsProvider'
 import { useBookBuyersProvider } from '../providers/useBookBuyersProviders'
 import { useBookProvider } from '../providers/useBookProvider'
 import { useBookAuthorsProviders } from '../providers/useBookAuthorsProviders'
+import { BuyBookModal } from './BuyBookModal'
 
 interface BookDetailsProps {
   id: string
@@ -76,6 +77,12 @@ export const BookDetails = ({ id }: BookDetailsProps) => {
 
   return (
     <Space direction="vertical" style={{ textAlign: 'left', width: '95%' }}>
+      <Breadcrumb
+        items={[
+          { title: <Link to="/books">Books</Link> },
+          { title: book?.title || '...' },
+        ]}
+      />
       <Link to={booksRoute.to}>
         <ArrowLeftOutlined />
       </Link>
@@ -169,12 +176,14 @@ export const BookDetails = ({ id }: BookDetailsProps) => {
           {buyers.map(buyer => (
             <li key={buyer.id}>
               <Typography.Text>
-                {buyer.firstName} {buyer.lastName} ({buyer.email})
+                {buyer.firstName} {buyer.lastName}
+                {buyer.email ? ` (${buyer.email})` : ''}
               </Typography.Text>
             </li>
           ))}
         </ul>
       )}
+      <BuyBookModal book={book} onBuy={loadBuyers} />
     </Space>
   )
 }
