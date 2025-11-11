@@ -10,6 +10,7 @@ import {
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Route as clientRoute } from '../../routes/clients'
 import { DeleteClientModal } from './DeleteClientModal'
+import { useClientBooksProvider } from '../../clients/providers/useClientBooksProvider'
 
 interface ClientDetailsProps {
   id: string
@@ -22,9 +23,16 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
   const [form] = Form.useForm()
   const navigate = useNavigate()
 
+  const {
+    isLoading: booksLoading,
+    books,
+    loadBooks,
+  } = useClientBooksProvider(id)
+
   useEffect(() => {
     loadClient()
-  }, [id, loadClient])
+    loadBooks()
+  }, [id, loadClient, loadBooks])
 
   useEffect(() => {
     if (client) {
@@ -131,7 +139,7 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
 
       <div style={{ display: 'flex', gap: '.5rem', alignItems: 'center' }}>
         {!isEditing ? (
-          <Typography.Title level={1} style={{ margin: 0, color: '#fff' }}>
+          <Typography.Title level={1} style={{ margin: 0 }}>
             {client?.firstName} {client?.lastName}
           </Typography.Title>
         ) : (
@@ -153,9 +161,7 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
       </div>
 
       {!isEditing && (
-        <Typography.Title level={3} style={{ color: '#fff' }}>
-          Email : {client?.email}
-        </Typography.Title>
+        <Typography.Title level={3}>Email : {client?.email}</Typography.Title>
       )}
       {isEditing && (
         <Form form={form} layout="vertical">
@@ -166,6 +172,25 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
             <Input />
           </Form.Item>
         </Form>
+      )}
+      <Typography.Title level={4}>Books</Typography.Title>
+      {booksLoading ? (
+        <Skeleton active />
+      ) : books && books.length > 0 ? (
+        <ul>
+          {books.map((book, idx) => (
+            <li key={book?.id ?? idx}>
+              <Typography.Text>
+                {book?.title ?? 'Untitled'}
+                {book?.author
+                  ? ` (${book.author.firstName ?? ''} ${book.author.lastName ?? ''})`
+                  : ''}
+              </Typography.Text>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <Typography.Text type="secondary">Aucun livre associé</Typography.Text>
       )}
     </Space>
   )

@@ -29,19 +29,18 @@ export function DeleteClientModal({
         danger
         icon={<DeleteOutlined />}
         onClick={() => setIsOpen(true)}
-      >
-        Supprimer
-      </Button>
+      ></Button>
 
       <Modal
         open={isOpen}
+        okButtonProps={{ danger: true }}
         onCancel={onClose}
         onOk={handleConfirm}
-        okText="Supprimer"
-        cancelText="Annuler"
-        title="Confirmer la suppression"
+        okText="Delete"
+        cancelText="Cancel"
+        title="Confirm Deletion"
       >
-        <p>Voulez-vous vraiment supprimer {clientName ?? 'ce client'} ?</p>
+        <p>Do you really want to delete {clientName ?? 'this client'} ?</p>
       </Modal>
     </>
   )
