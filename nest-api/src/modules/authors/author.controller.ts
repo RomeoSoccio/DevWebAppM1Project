@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Delete } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './author.dto';
 
@@ -14,6 +14,11 @@ export class AuthorController {
   @Get(':id')
   public async getAuthor(@Param('id') id: string) {
     return this.authorService.getAuthorById(id);
+  }
+
+  @Delete(':id')
+  public async deleteAuthor(@Param('id') id: string) {
+    return this.authorService.deleteAuthor(id);
   }
 
   @Post()

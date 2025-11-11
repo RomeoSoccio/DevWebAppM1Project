@@ -6,6 +6,9 @@ import axios from 'axios'
 export const useAuthorDetailsProvider = (id: string) => {
   const [isLoading, setIsLoading] = useState(false)
   const [author, setAuthor] = useState<AuthorModel | null>(null)
+  const [booksByAuthor, setBooksByAuthor] = useState<
+    Array<BookModel & { authorId?: string }>
+  >([])
 
   const loadAuthor = useCallback(async () => {
     setIsLoading(true)
@@ -21,12 +24,13 @@ export const useAuthorDetailsProvider = (id: string) => {
         booksRes.data?.data ?? []
 
       if (found) {
-        const count = books.filter(
-          b => (b.author?.id ?? b.authorId) === id,
-        ).length
+        const matches = books.filter(b => (b.author?.id ?? b.authorId) === id)
+        const count = matches.length
         setAuthor({ ...found, booksCount: count })
+        setBooksByAuthor(matches)
       } else {
         setAuthor(null)
+        setBooksByAuthor([])
       }
     } catch (err) {
       console.error(err)
@@ -59,5 +63,12 @@ export const useAuthorDetailsProvider = (id: string) => {
       })
   }, [id])
 
-  return { isLoading, author, loadAuthor, updateAuthor, deleteAuthor }
+  return {
+    isLoading,
+    author,
+    booksByAuthor,
+    loadAuthor,
+    updateAuthor,
+    deleteAuthor,
+  }
 }

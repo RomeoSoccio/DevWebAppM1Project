@@ -16,8 +16,14 @@ interface AuthorDetailsProps {
 }
 
 export const AuthorDetails = ({ id }: AuthorDetailsProps) => {
-  const { isLoading, author, loadAuthor, updateAuthor, deleteAuthor } =
-    useAuthorDetailsProvider(id)
+  const {
+    isLoading,
+    author,
+    booksByAuthor,
+    loadAuthor,
+    updateAuthor,
+    deleteAuthor,
+  } = useAuthorDetailsProvider(id)
   const [isEditing, setIsEditing] = useState(false)
   const [form] = Form.useForm()
   const navigate = useNavigate()
@@ -150,9 +156,29 @@ export const AuthorDetails = ({ id }: AuthorDetailsProps) => {
       </div>
 
       {!isEditing && (
-        <Typography.Title level={3} style={{ color: '#fff' }}>
-          Livres écrits : {author?.booksCount ?? 0}
-        </Typography.Title>
+        <>
+          <Typography.Title level={3} style={{ color: '#fff' }}>
+            Books : {author?.booksCount ?? 0}
+          </Typography.Title>
+
+          <div style={{ color: '#fff' }}>
+            {booksByAuthor.length === 0 ? (
+              <div>Aucun livre trouvé pour cet auteur.</div>
+            ) : (
+              <ul style={{ paddingLeft: 16 }}>
+                {booksByAuthor.map(b => (
+                  <li key={b.id} style={{ margin: '0.25rem 0' }}>
+                    <Link to={`/books/${b.id}` as string}>
+                      <Typography.Text style={{ color: '#fff' }}>
+                        {b.title} ({b.yearPublished})
+                      </Typography.Text>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </>
       )}
       {isEditing && (
         <Form form={form} layout="vertical">

@@ -159,9 +159,7 @@ export const BookDetails = ({ id }: BookDetailsProps) => {
         )}
       </div>
 
-      <Typography.Title level={4}>
-        Clients ayant acheté ce livre
-      </Typography.Title>
+      <Typography.Title level={4}>Clients who buy this book</Typography.Title>
       {buyersLoading ? (
         <Skeleton active />
       ) : (

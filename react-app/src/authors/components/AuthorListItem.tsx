@@ -14,13 +14,13 @@ export function AuthorListItem({ author, onDelete }: AuthorListItemProps) {
     <Row
       style={{
         width: '100%',
-        height: '50px',
         borderRadius: '10px',
         backgroundColor: '#EEEEEE',
         margin: '1rem 0',
-        padding: '.25rem',
+        padding: '.5rem',
         display: 'flex',
         justifyContent: 'space-between',
+        alignItems: 'center',
       }}
     >
       <Col span={12} style={{ margin: 'auto 0' }}>
@@ -28,9 +28,15 @@ export function AuthorListItem({ author, onDelete }: AuthorListItemProps) {
           to={`/authors/${author.id}` as string}
           style={{ margin: 'auto 0', textAlign: 'left' }}
         >
-          <span style={{ fontWeight: 'bold' }}>
-            {author.firstName} {author.lastName}
-          </span>
+          <div>
+            <span style={{ fontWeight: 'bold' }}>
+              {author.firstName} {author.lastName}
+            </span>
+          </div>
+          <div style={{ fontSize: 12, color: '#666' }}>
+            {author.booksCount ?? 0} Books
+            {(author.booksCount ?? 0) > 1 ? 's' : ''}
+          </div>
         </Link>
       </Col>
 
