@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Skeleton, Space, Typography, Select } from 'antd'
 import {
   ArrowLeftOutlined,

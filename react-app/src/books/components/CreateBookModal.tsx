@@ -25,7 +25,7 @@ export function CreateBookModal({ onCreate }: CreateBookModalProps) {
     if (isOpen) {
       loadAuthors()
     }
-  }, [isOpen])
+  }, [isOpen, loadAuthors])
 
   return (
     <>
@@ -43,7 +43,8 @@ export function CreateBookModal({ onCreate }: CreateBookModalProps) {
           onCreate({
             title,
             yearPublished,
-            authorId: '4540d533-3100-445a-8796-ab5dfd9a3240',
+            authorId: authorId ?? '4540d533-3100-445a-8796-ab5dfd9a3240',
+            photoURL: '',
           })
           onClose()
         }}
