@@ -35,7 +35,7 @@ export class SaleRepository {
       where: Object.keys(where).length ? where : undefined,
       take: input?.limit,
       skip: input?.offset,
-      relations: ['client', 'book'],
+      relations: ['client', 'book', 'book.author'],
     });
     return [sales, totalCount];
   }

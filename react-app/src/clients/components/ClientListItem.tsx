@@ -1,5 +1,6 @@
 import type { ClientModel } from '../ClientModel'
-import { Button, Col, Row } from 'antd'
+import { Button, Col, Row, Typography } from 'antd'
+import { useEffect, useState } from 'react'
 import { EditOutlined } from '@ant-design/icons'
 import { Link } from '@tanstack/react-router'
 import { DeleteClientModal } from './DeleteClientModal'
@@ -10,6 +11,31 @@ interface ClientListItemProps {
 }
 
 export function ClientListItem({ client, onDelete }: ClientListItemProps) {
+  const [orderCount, setOrderCount] = useState<number | null>(null)
+
+  useEffect(() => {
+    let mounted = true
+    // fetch only one sale but rely on the API returning totalCount
+    fetch(`http://localhost:3000/sales?clientId=${client.id}&limit=1`)
+      .then(r => r.json())
+      .then(data => {
+        if (!mounted) return
+        const count = data.totalCount
+        setOrderCount(typeof count === 'number' ? count : 0)
+      })
+      .catch(() => {
+        if (mounted) setOrderCount(0)
+      })
+
+    return () => {
+      mounted = false
+    }
+  }, [client.id])
+
+  const orderLabel =
+    orderCount !== null
+      ? `${orderCount} commande${orderCount > 1 ? 's' : ''}`
+      : 'Chargement...'
   return (
     <Row
       style={{
@@ -32,6 +58,12 @@ export function ClientListItem({ client, onDelete }: ClientListItemProps) {
             {client.firstName} {client.lastName}
           </span>
         </Link>
+      </Col>
+
+      <Col span={8} style={{ margin: 'auto 0' }}>
+        <div>
+          <Typography.Text type="secondary">{orderLabel}</Typography.Text>
+        </div>
       </Col>
 
       <Col

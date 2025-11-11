@@ -10,7 +10,7 @@ import {
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Route as clientRoute } from '../../routes/clients'
 import { DeleteClientModal } from './DeleteClientModal'
-import { useClientBooksProvider } from '../../clients/providers/useClientBooksProvider'
+import { useClientSalesProvider } from '../../clients/providers/useClientSalesProvider'
 
 interface ClientDetailsProps {
   id: string
@@ -24,15 +24,15 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
   const navigate = useNavigate()
 
   const {
-    isLoading: booksLoading,
-    books,
-    loadBooks,
-  } = useClientBooksProvider(id)
+    isLoading: salesLoading,
+    sales,
+    loadSales,
+  } = useClientSalesProvider(id)
 
   useEffect(() => {
     loadClient()
-    loadBooks()
-  }, [id, loadClient, loadBooks])
+    loadSales()
+  }, [id, loadClient, loadSales])
 
   useEffect(() => {
     if (client) {
@@ -73,6 +73,16 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
     } catch {
       // handle delete error
     }
+  }
+
+  const formatDate = (iso?: string | Date) => {
+    if (!iso) return ''
+    const d = typeof iso === 'string' ? new Date(iso) : iso
+    if (!d || isNaN(d.getTime())) return typeof iso === 'string' ? iso : ''
+    return `${d.toLocaleDateString('fr-FR')} ${d.toLocaleTimeString('fr-FR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    })}`
   }
 
   return (
@@ -174,23 +184,24 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
         </Form>
       )}
       <Typography.Title level={4}>Books</Typography.Title>
-      {booksLoading ? (
+      {salesLoading ? (
         <Skeleton active />
-      ) : books && books.length > 0 ? (
+      ) : sales && sales.length > 0 ? (
         <ul>
-          {books.map((book, idx) => (
-            <li key={book?.id ?? idx}>
+          {sales.map((sale, idx) => (
+            <li key={sale?.id ?? idx}>
               <Typography.Text>
-                {book?.title ?? 'Untitled'}
-                {book?.author
-                  ? ` (${book.author.firstName ?? ''} ${book.author.lastName ?? ''})`
+                {sale?.book.title ?? 'Untitled'}
+                {sale?.book.author
+                  ? ` written by ${sale?.book.author.firstName ?? ''} ${sale?.book.author.lastName ?? ''}`
                   : ''}
+                {sale?.date ? ` (bought on ${formatDate(sale.date)})` : ''}
               </Typography.Text>
             </li>
           ))}
         </ul>
       ) : (
-        <Typography.Text type="secondary">Aucun livre associé</Typography.Text>
+        <Typography.Text type="secondary">No books</Typography.Text>
       )}
     </Space>
   )
