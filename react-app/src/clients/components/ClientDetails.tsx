@@ -52,6 +52,7 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
       <Typography.Title level={1}>
         {client?.firstName} {client?.lastName}
       </Typography.Title>
+      <Typography.Title level={3}>Email : {client?.email}</Typography.Title>
     </Space>
   )
 }

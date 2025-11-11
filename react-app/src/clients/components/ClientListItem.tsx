@@ -82,6 +82,7 @@ export function ClientListItem({
           display: 'flex',
           gap: '.25rem',
           margin: 'auto 0',
+          marginRight: '3rem',
         }}
       >
         {isEditing ? (

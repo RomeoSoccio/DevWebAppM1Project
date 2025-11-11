@@ -14,7 +14,7 @@ export function ClientList() {
   return (
     <>
       <CreateClientModal onCreate={createClient} />
-      <div style={{ padding: '0 .5rem' }}>
+      <div style={{ padding: '0 1rem' }}>
         {client.map(current_client => (
           <ClientListItem
             key={current_client.id}
