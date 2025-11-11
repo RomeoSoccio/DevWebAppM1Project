@@ -12,12 +12,14 @@ import { useBookDetailsProvider } from '../providers/useBookDetailsProvider'
 import { useBookBuyersProvider } from '../providers/useBookBuyersProviders'
 import { useBookProvider } from '../providers/useBookProvider'
 import { useBookAuthorsProviders } from '../providers/useBookAuthorsProviders'
+import { BuyBookModal } from './BuyBookModal'
 
 interface BookDetailsProps {
   id: string
+  onBuy: (id: string) => void
 }
 
-export const BookDetails = ({ id }: BookDetailsProps) => {
+export const BookDetails = ({ id, onBuy }: BookDetailsProps) => {
   const { isLoading, book, loadBook } = useBookDetailsProvider(id)
   const { updateBook } = useBookProvider()
   const { authors, loadAuthors } = useBookAuthorsProviders()
@@ -173,6 +175,7 @@ export const BookDetails = ({ id }: BookDetailsProps) => {
           ))}
         </ul>
       )}
+      <BuyBookModal book={book} onBuy={onBuy} />
     </Space>
   )
 }
