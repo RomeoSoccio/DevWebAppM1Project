@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Skeleton, Space, Typography, Select } from 'antd'
+import { Button, Skeleton, Space, Typography, Select, Breadcrumb } from 'antd'
 import {
   ArrowLeftOutlined,
   CheckOutlined,
@@ -77,6 +77,12 @@ export const BookDetails = ({ id }: BookDetailsProps) => {
 
   return (
     <Space direction="vertical" style={{ textAlign: 'left', width: '95%' }}>
+      <Breadcrumb
+        items={[
+          { title: <Link to="/books">Books</Link> },
+          { title: book?.title || '...' },
+        ]}
+      />
       <Link to={booksRoute.to}>
         <ArrowLeftOutlined />
       </Link>
