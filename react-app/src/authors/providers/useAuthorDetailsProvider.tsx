@@ -10,17 +10,16 @@ export const useAuthorDetailsProvider = (id: string) => {
   const loadAuthor = useCallback(async () => {
     setIsLoading(true)
     try {
-      // backend does not provide GET /authors/:id in current API, so fetch all and find
-      const [authorsRes, booksRes] = await Promise.all([
-        axios.get('http://localhost:3000/authors'),
+      // Use dedicated endpoint to fetch a single author by id
+      const [authorRes, booksRes] = await Promise.all([
+        axios.get(`http://localhost:3000/authors/${id}`),
         axios.get('http://localhost:3000/books'),
       ])
 
-      const authors: AuthorModel[] = authorsRes.data ?? []
+      const found: AuthorModel | null = authorRes.data ?? null
       const books: Array<BookModel & { authorId?: string }> =
         booksRes.data?.data ?? []
 
-      const found = authors.find(a => a.id === id) ?? null
       if (found) {
         const count = books.filter(
           b => (b.author?.id ?? b.authorId) === id,
