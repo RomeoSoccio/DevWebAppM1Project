@@ -1,12 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import type { BookModel, UpdateBookModel } from '../BookModel'
-import { Button, Col, Row, Modal } from 'antd'
-import {
-  CheckOutlined,
-  CloseOutlined,
-  DeleteOutlined,
-  EditOutlined,
-} from '@ant-design/icons'
+import { Button, Col, Row } from 'antd'
+import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons'
+import { DeleteBookModal } from './DeleteBookModal'
 import { Link } from '@tanstack/react-router'
 
 interface BookListItemProps {
@@ -16,50 +12,6 @@ interface BookListItemProps {
 }
 
 export function BookListItem({ book, onDelete, onUpdate }: BookListItemProps) {
-  const showDeleteConfirm = () => {
-    console.log('BookListItem: showDeleteConfirm called for id=', book.id)
-    // Ant Design v5 currently shows a compatibility warning for React 19.
-    // If running React >= 19, some Antd components that rely on internal APIs
-    // (portals, lifecycle hooks) may not render correctly. Use a safe native
-    // fallback so the delete UX always works.
-    try {
-      const reactVersion = (React?.version || '')
-        .split('.')
-        .map(s => parseInt(s, 10) || 0)
-      const reactMajor = reactVersion[0] || 0
-      if (reactMajor >= 19) {
-        console.warn(
-          'Antd v5 may be incompatible with React >=19 — using native confirm fallback',
-        )
-        if (window.confirm(`Supprimer le livre "${book.title}" ?`)) {
-          console.log('BookListItem: native confirm accepted for id=', book.id)
-          onDelete(book.id)
-        }
-        return
-      }
-
-      // For React <=18, try Antd Modal.confirm as intended.
-      Modal.confirm({
-        title: 'Supprimer le livre',
-        content: `Voulez-vous vraiment supprimer "${book.title}" ?`,
-        okText: 'Supprimer',
-        okType: 'danger',
-        cancelText: 'Annuler',
-        onOk: () => {
-          console.log('BookListItem: confirmed delete for id=', book.id)
-          onDelete(book.id)
-        },
-      })
-    } catch (err) {
-      console.error(
-        'BookListItem: Modal.confirm error, falling back to native confirm',
-        err,
-      )
-      if (window.confirm(`Supprimer le livre "${book.title}" ?`)) {
-        onDelete(book.id)
-      }
-    }
-  }
   const [title, setTitle] = useState(book.title)
   const [isEditing, setIsEditing] = useState(false)
 
@@ -130,9 +82,7 @@ export function BookListItem({ book, onDelete, onUpdate }: BookListItemProps) {
             <EditOutlined />
           </Button>
         )}
-        <Button type="primary" danger onClick={showDeleteConfirm}>
-          <DeleteOutlined />
-        </Button>
+        <DeleteBookModal book={book} onDelete={onDelete} />
       </Col>
     </Row>
   )
