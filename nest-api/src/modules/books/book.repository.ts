@@ -9,6 +9,7 @@ import {
   UpdateBookModel,
 } from './book.model';
 import { BookEntity, BookId } from './entities/book.entity';
+import { AuthorId } from '../authors/author.entity';
 
 @Injectable()
 export class BookRepository {
@@ -92,6 +93,12 @@ export class BookRepository {
       await Promise.all(
         ids.map((id) => transactionalEntityManager.delete(BookEntity, { id })),
       );
+    });
+  }
+
+  public async countBooksByAuthor(authorId: string): Promise<number> {
+    return this.bookRepository.count({
+      where: { authorId: authorId as AuthorId },
     });
   }
 }

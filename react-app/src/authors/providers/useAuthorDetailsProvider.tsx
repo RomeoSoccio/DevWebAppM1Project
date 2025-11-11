@@ -9,14 +9,18 @@ export const useAuthorDetailsProvider = (id: string) => {
   const [booksByAuthor, setBooksByAuthor] = useState<
     Array<BookModel & { authorId?: string }>
   >([])
+  const [averageSalesPerBook, setAverageSalesPerBook] = useState<number | null>(
+    null,
+  )
 
   const loadAuthor = useCallback(async () => {
     setIsLoading(true)
     try {
       // Use dedicated endpoint to fetch a single author by id
-      const [authorRes, booksRes] = await Promise.all([
+      const [authorRes, booksRes, salesRes] = await Promise.all([
         axios.get(`http://localhost:3000/authors/${id}`),
         axios.get('http://localhost:3000/books'),
+        axios.get(`http://localhost:3000/sales/summary/author/${id}`),
       ])
 
       const found: AuthorModel | null = authorRes.data ?? null
@@ -28,6 +32,8 @@ export const useAuthorDetailsProvider = (id: string) => {
         const count = matches.length
         setAuthor({ ...found, booksCount: count })
         setBooksByAuthor(matches)
+        const avg = salesRes?.data?.averageSalesPerBook ?? null
+        setAverageSalesPerBook(typeof avg === 'number' ? avg : null)
       } else {
         setAuthor(null)
         setBooksByAuthor([])
@@ -67,6 +73,7 @@ export const useAuthorDetailsProvider = (id: string) => {
     isLoading,
     author,
     booksByAuthor,
+    averageSalesPerBook,
     loadAuthor,
     updateAuthor,
     deleteAuthor,

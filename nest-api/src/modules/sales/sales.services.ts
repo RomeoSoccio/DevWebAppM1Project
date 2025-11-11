@@ -19,4 +19,8 @@ export class SaleService {
   public async deleteSale(id: string): Promise<void> {
     await this.saleRepository.deleteSale(id);
   }
+
+  public async getSalesSummaryByAuthor(authorId: string) {
+    return this.saleRepository.getSalesSummaryByAuthor(authorId);
+  }
 }

@@ -20,6 +20,7 @@ export const AuthorDetails = ({ id }: AuthorDetailsProps) => {
     isLoading,
     author,
     booksByAuthor,
+    averageSalesPerBook,
     loadAuthor,
     updateAuthor,
     deleteAuthor,
@@ -160,6 +161,13 @@ export const AuthorDetails = ({ id }: AuthorDetailsProps) => {
           <Typography.Title level={3} style={{ color: '#fff' }}>
             Books : {author?.booksCount ?? 0}
           </Typography.Title>
+
+          <div style={{ color: '#fff', marginBottom: '.5rem' }}>
+            Average book sell :{' '}
+            {averageSalesPerBook === null
+              ? '—'
+              : Math.round(averageSalesPerBook * 100) / 100}
+          </div>
 
           <div style={{ color: '#fff' }}>
             {booksByAuthor.length === 0 ? (

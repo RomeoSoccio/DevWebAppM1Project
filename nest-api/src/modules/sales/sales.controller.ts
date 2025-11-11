@@ -36,4 +36,9 @@ export class SaleController {
   deleteBook(@Param('id') id: string) {
     return this.saleService.deleteSale(id);
   }
+
+  @Get('summary/author/:authorId')
+  public async getSalesSummaryByAuthor(@Param('authorId') authorId: string) {
+    return this.saleService.getSalesSummaryByAuthor(authorId);
+  }
 }

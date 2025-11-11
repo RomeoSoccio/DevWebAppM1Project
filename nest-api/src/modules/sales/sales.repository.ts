@@ -6,6 +6,7 @@ import { DataSource } from 'typeorm';
 import { CreateSaleModel, FilterSaleModel, SaleModel } from './sales.model';
 import { ClientEntity } from '../clients/client.entity';
 import { BookEntity } from '../books/entities/book.entity';
+import { AuthorId } from '../authors/author.entity';
 
 @Injectable()
 export class SaleRepository {
@@ -61,5 +62,48 @@ export class SaleRepository {
 
   public async deleteSale(id: string): Promise<void> {
     await this.saleRepository.delete(id);
+  }
+
+  public async getSalesCountsByAuthor(authorId: string): Promise<
+    {
+      bookId: string;
+      salesCount: number;
+    }[]
+  > {
+    const rows = await this.saleRepository
+      .createQueryBuilder('sale')
+      .innerJoin('sale.book', 'book')
+      .select('book.id', 'bookId')
+      .addSelect('COUNT(sale.id)', 'salesCount')
+      .where('book.authorId = :authorId', { authorId })
+      .groupBy('book.id')
+      .getRawMany<{
+        bookId: string;
+        salesCount: string | number;
+      }>();
+
+    return rows.map((r) => ({
+      bookId: r.bookId,
+      salesCount: Number(r.salesCount),
+    }));
+  }
+
+  public async getSalesSummaryByAuthor(authorId: string): Promise<{
+    salesByBook: { bookId: string; salesCount: number }[];
+    totalBooks: number;
+    totalSales: number;
+    averageSalesPerBook: number;
+  }> {
+    const salesByBook = await this.getSalesCountsByAuthor(authorId);
+    const totalSales = salesByBook.reduce(
+      (acc, cur) => acc + cur.salesCount,
+      0,
+    );
+    const totalBooks = await this.bookRepository.count({
+      where: { authorId: authorId as AuthorId },
+    });
+    const averageSalesPerBook = totalBooks === 0 ? 0 : totalSales / totalBooks;
+
+    return { salesByBook, totalBooks, totalSales, averageSalesPerBook };
   }
 }
