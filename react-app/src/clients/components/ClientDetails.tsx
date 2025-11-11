@@ -1,4 +1,4 @@
-import { Skeleton, Space, Typography } from 'antd'
+import { Skeleton, Space, Typography, Image } from 'antd'
 import { useClientDetailsProvider } from '../providers/useClientDetailsProvider'
 import { useEffect } from 'react'
 import { ArrowLeftOutlined } from '@ant-design/icons'
@@ -25,8 +25,33 @@ export const ClientDetails = ({ id }: ClientDetailsProps) => {
       <Link to={clientRoute.to}>
         <ArrowLeftOutlined />
       </Link>
-      <Typography.Title level={1}>{client?.firstName}</Typography.Title>
-      <Typography.Title level={2}>{client?.lastName}</Typography.Title>
+
+      {client?.photoUrl ? (
+        <Image
+          src={client.photoUrl}
+          alt={`${client?.firstName ?? ''} ${client?.lastName ?? ''}`.trim()}
+          width={200}
+          style={{ borderRadius: 8 }}
+        />
+      ) : (
+        <div
+          style={{
+            width: 200,
+            height: 200,
+            background: '#f0f0f0',
+            borderRadius: 8,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#888',
+          }}
+        >
+          Pas de photo
+        </div>
+      )}
+      <Typography.Title level={1}>
+        {client?.firstName} {client?.lastName}
+      </Typography.Title>
     </Space>
   )
 }
